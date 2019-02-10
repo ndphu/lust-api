@@ -1,0 +1,8 @@
+---
+applications:
+- name: lust-api
+  memory: 24M
+  instances: 1
+  command: lust-api
+  random-route: true
+
