@@ -28,6 +28,7 @@ func main() {
 	controller.SearchController(api.Group("/search"))
 	controller.CategoryController(api.Group("/category"))
 	controller.MovieController(api.Group("/movie"))
+	controller.HomeController(api.Group("/home"))
 
 	//updateMovies()
 
