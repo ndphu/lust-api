@@ -19,6 +19,7 @@ func SearchController(r *gin.RouterGroup) error {
 				"_id":      1,
 				"title":    1,
 				"category": 1,
+				"size":     1,
 			}).
 			Limit(20).
 			All(&movies)
