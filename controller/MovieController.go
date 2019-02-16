@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func MovieController(r * gin.RouterGroup)  {
+func MovieController(r *gin.RouterGroup) {
 	r.GET("/:id", func(c *gin.Context) {
 		mid := c.Param("id")
 		m := entity.Movie{}
@@ -34,7 +34,7 @@ func MovieController(r * gin.RouterGroup)  {
 
 		c.JSON(200, gin.H{
 			"movie": m,
-			"link": data["link"],
+			"link":  data["link"],
 		})
 	})
 }

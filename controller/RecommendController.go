@@ -15,7 +15,7 @@ func RecommendController(r *gin.RouterGroup) {
 	r.GET("/category/:cat", func(c *gin.Context) {
 		movies := make([]entity.Movie, 0)
 		dao.Collection("movie").Pipe([]bson.M{
-			{"$match": bson.M{"category": c.Param("cat")}},
+			{"$match": bson.M{"category": c.Param("cat"), "size": bson.M{"$gt": 0},}},
 			{"$sample": bson.M{"size": 20}},
 			{"$project": bson.M{"_id": 1, "title": 1, "size": 1, "category": 1}},
 		}).All(&movies)

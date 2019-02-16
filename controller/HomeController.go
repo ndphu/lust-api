@@ -17,7 +17,7 @@ func HomeController(r*gin.RouterGroup)  {
 			go func(category string) {
 				movies := make([]entity.Movie, 0)
 				dao.Collection("movie").Pipe([]bson.M{
-					{"$match": bson.M{"category": category}},
+					{"$match": bson.M{"category": category, "size": bson.M{"$gt": 0},}},
 					{"$sample": bson.M{"size": 20}},
 					{"$project": bson.M{"_id": 1, "title": 1, "size": 1, "category": 1}},
 				}).All(&movies)

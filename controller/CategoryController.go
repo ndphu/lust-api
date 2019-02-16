@@ -15,6 +15,7 @@ func CategoryController(r *gin.RouterGroup) {
 		size := utils.GetIntQuery(c, "size", 10)
 		dao.GetSession().DB("lust").C("movie").Find(bson.M{
 			"category": c.Param("id"),
+			"size": bson.M{"$gt": 0},
 		}).Skip((page - 1) * size).Limit(size + 1).
 			Select(bson.M{"_id": 1, "title": 1, "size": 1, "category": 1}).
 			All(&movies)

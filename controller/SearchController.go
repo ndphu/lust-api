@@ -14,6 +14,7 @@ func SearchController(r *gin.RouterGroup) error {
 		dao.Collection("movie").
 			Find(bson.M{
 				"title": bson.RegEx{Pattern: query, Options: "i"},
+				"size": bson.M{"$gt": 0},
 			}).
 			Select(bson.M{
 				"_id":      1,

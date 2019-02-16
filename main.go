@@ -30,6 +30,7 @@ func main() {
 	controller.MovieController(api.Group("/movie"))
 	controller.HomeController(api.Group("/home"))
 	controller.RecommendController(api.Group("/recommend"))
+	controller.TrackingController(api.Group("/tracking"))
 
 	//updateMovies()
 
