@@ -10,4 +10,5 @@ type Movie struct {
 	Size      int64         `json:"size" bson:"size"`
 	DriveId   bson.ObjectId `json:"driveId,omitempty" bson:"driveId"`
 	FileId    string        `json:"fileId,omitempty" bson:"fileId"`
+	Tags      []string      `json:"tags" bson:"tags"`
 }

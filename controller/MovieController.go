@@ -8,6 +8,7 @@ import (
 	"github.com/ndphu/lust-api/entity"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 func MovieController(r *gin.RouterGroup) {
@@ -19,9 +20,21 @@ func MovieController(r *gin.RouterGroup) {
 			ServerError("movie not found", err, c)
 		}
 
-		resp, err := http.Get("https://drive-manager-api-villose-bassist.cfapps.io/api/manage" +
+		baseUrl := os.Getenv("STORAGE_BASE_URL")
+		serviceToken := os.Getenv("STORAGE_SERVICE_TOKEN")
+
+		reqUrl := baseUrl +
 			"/driveAccount/" + m.DriveId.Hex() +
-			"/file/" + m.FileId + "/download")
+			"/file/" + m.FileId + "/download"
+		req, err := http.NewRequest("GET", reqUrl, nil)
+		if err != nil {
+			ServerError("fail to get playing link", err, c)
+			return
+		}
+		req.Header.Set("Authorization", "Bearer " + serviceToken)
+		client := &http.Client{}
+		resp, err := client.Do(req)
+
 		if err != nil {
 			ServerError("fail to get playing link", err, c)
 			return

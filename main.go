@@ -33,12 +33,43 @@ func main() {
 	controller.TrackingController(api.Group("/tracking"))
 
 	//updateMovies()
+	//updateMissingMovie()
 
 	fmt.Println("Starting server")
 	api.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "OK"})
 	})
 	r.Run()
+}
+
+func updateMissingMovie()  {
+	driveFiles := make([]entity2.DriveFile, 0)
+	dao.GetSession().DB("drive-manager").C("file_entry").Find(nil).All(&driveFiles)
+	for _, df := range driveFiles {
+		if df.Name == "Getting started" {
+			continue
+		}
+		movieName := strings.TrimSuffix(df.Name, ".mp4")
+		count, _ := dao.GetSession().DB("lust").C("movie").Find(bson.M{"title": movieName}).Count()
+		if count == 0 {
+			log.Println("create movie for", df.Name)
+			movie := entity.Movie{
+				Id: bson.NewObjectId(),
+				Category: "uncensored",
+				Title: movieName,
+				Size: df.Size,
+				DriveId: df.DriveAccount,
+				FileId: df.DriveFileId,
+				Tags: []string{"FullHD", "1080p", "HD"},
+			}
+			err := dao.GetSession().DB("lust").C("movie").Insert(&movie)
+			if err != nil {
+				log.Println("fail to create movie for file", df.Name)
+			} else {
+				log.Println("inserted movie", movie.Id.Hex(), movie.Title)
+			}
+		}
+	}
 }
 
 func updateMovies() {
